@@ -152,8 +152,10 @@
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'track_shipment' %}">Track Shipment</a></li>
                 <li><a href="{% url 'user_chat' %}">Chat Admin</a></li>
+                <li><a href="{% url 'contact' %}">Contact Support</a></li>
                 {% if request.user.is_superuser %}
                 <li><a href="{% url 'chat_admin' %}">Admin Panel</a></li>
+                <li><a href="{% url 'receive_messages' %}">Support Spport</a></li>
                 {% endif %}
                 <li><a href="{% url 'terms' %}">Terms and Services</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -162,7 +164,6 @@
                 <li><a href="{% url 'login' %}">Sign In</a></li>
                 <li><a href="{% url 'register' %}">Sign Up</a></li>
                 {% endif %}
-                <li><a href="">Contact</a></li>
             </ul>
         </div>
     </nav>

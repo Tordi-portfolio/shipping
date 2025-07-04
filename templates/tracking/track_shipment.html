@@ -1,0 +1,7 @@
+<h2>Track Your Shipment</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Enter Tracking ID:</label>
+    <input type="text" name="tracking_id" required>
+    <button type="submit">Track</button>
+</form>

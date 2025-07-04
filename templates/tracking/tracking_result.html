@@ -1,0 +1,15 @@
+{% if shipment %}
+    <h3>Shipment Details:</h3>
+    <p><strong>Tracking ID:</strong> {{ shipment.tracking_id }}</p>
+    <p><strong>Full Name:</strong> {{ shipment.full_name }}</p>
+    <p><strong>Email:</strong> {{ shipment.email }}</p>
+    <p><strong>Service:</strong> {{ shipment.service }}</p>
+    <p><strong>Commodity:</strong> {{ shipment.commodity }}</p>
+    <p><strong>Destination:</strong> {{ shipment.destination_country }}</p>
+    <p><strong>Weight:</strong> {{ shipment.weight }} kg</p>
+    <p><strong>Quantity:</strong> {{ shipment.quantity }}</p>
+    <p><strong>Note:</strong> {{ shipment.note }}</p>
+    <p><strong>Status:</strong> {{ shipment.status }}</p>
+{% elif error %}
+    <p style="color:red">{{ error }}</p>
+{% endif %}

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('{% static "img/image-1.webp" %}') no-repeat center center/cover;
+    padding: 100px 20px;
+    text-align: center;
+    color: white;
+    border-radius: 12px;
+    margin: 40px auto;
+    max-width: 1200px;
+}
+
+.hero-content h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: white;
+    color: #111;
+}
+
+.btn-primary:hover {
+    background-color: #f3f3f3;
+}
+
+.btn-secondary {
+    background-color: #1f2937;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #374151;
+}
+
+/* Shipping Section */
+.shipping-section {
+    padding: 60px 20px;
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+}
+
+.shipping-section .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #9ca3af;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.shipping-section h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* Cards Layout */
+.shipping-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.shipping-card {
+    background-color: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+}
+
+.shipping-card:hover {
+    transform: scale(1.02);
+}
+
+.shipping-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-description {
+    padding: 15px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #f3f4f6;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 0.95rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .shipping-section h2 {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Experience unmatched speed and efficiency.</h1>
+        <p>We excel in reliability, treating each shipment as a promise kept. By prioritizing sustainability and integrating all freight modes.</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-primary">Get Started</a>
+            <a href="#" class="btn btn-secondary">About Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- Shipping Section -->
+<section class="shipping-section">
+    <p class="section-label">Flexible Shipping</p>
+    <h2>Multiple carriers ensure your package is delivered with precision, every time.</h2>
+
+    <div class="shipping-cards">
+        <!-- Road Freight -->
+        <div class="shipping-card">
+            <img src="{% static 'img/image-2.webp' %}" alt="Road Freight">
+            <div class="card-description">
+                We excel in road freight, ensuring timely deliveries with reliable logistics and excellent customer service.
+            </div>
+        </div>
+
+        <!-- Air Freight -->
+        <div class="shipping-card">
+            <img src="{% static 'img/image-3.webp' %}" alt="Air Freight">
+            <div class="card-description">
+                Our air freight services provide swift, reliable deliveries, utilizing global networks for unmatched efficiency and speed.
+            </div>
+        </div>
+
+        <!-- Sea Freight -->
+        <div class="shipping-card">
+            <img src="{% static 'img/image-4.webp' %}" alt="Sea Freight">
+            <div class="card-description">
+                Sea freight services provide reliable shipping solutions, ensuring timely transport of goods across global waters.
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

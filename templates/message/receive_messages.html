@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .receive-container {
+        max-width: 900px;
+        margin: 80px auto 40px auto;
+        padding: 30px;
+        background-color: #1a202c;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        color: #e6edf3;
+        text-align: center;
+    }
+
+    .receive-container h2 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    .message-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .message-item {
+        background-color: #0f172a;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        text-align: left;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .message-item h3 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #60a5fa; /* Blue for subject */
+        margin-bottom: 5px;
+    }
+
+    .message-item p {
+        font-size: 0.95rem;
+        color: #e6edf3;
+        margin-bottom: 5px;
+    }
+
+    .message-item .meta {
+        font-size: 0.85rem;
+        color: #9ca3af;
+        margin-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 10px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .receive-container {
+            margin: 60px 15px 30px 15px;
+            padding: 20px;
+        }
+        .receive-container h2 {
+            font-size: 1.75rem;
+        }
+        .message-item {
+            padding: 15px;
+        }
+        .message-item h3 {
+            font-size: 1.1rem;
+        }
+        .message-item p {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
+<div class="receive-container">
+    <h2>Received Contact Messages</h2>
+    {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+                <li class="message-item">
+                    <h3>{{ message.subject }}</h3>
+                    <p><strong>From:</strong> {{ message.name }} ({{ message.email }})</p>
+                    <p>{{ message.message }}</p>
+                    <p class="meta">Received: {{ message.created_at|date:"F d, Y H:i" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No messages received yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

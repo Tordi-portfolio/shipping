@@ -1,7 +1,55 @@
-<h2>Shipment Created Successfully!</h2>
+{% extends "base.html" %}
 
-<p>Your shipment has been created. Your tracking ID is:</p>
+{% block extra_css %}
+<style>
+    .success-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-<h3 style="color: green;">{{ shipment.tracking_id }}</h3>
+    .success-container h2 {
+        color: #4caf50;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
 
-<a href="{% url 'track_shipment' %}">Track ID</a>
+    .success-container p {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    .success-container strong {
+        color: #4f46e5;
+    }
+
+    .btn-track {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #4f46e5;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background 0.3s ease;
+    }
+
+    .btn-track:hover {
+        background-color: #3730a3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <h2>{{ message }}</h2>
+    <p>Your Tracking ID is: <strong>{{ tracking_id }}</strong></p>
+    <a href="{% url 'track_shipment' %}" class="btn-track">Track your shipment</a>
+</div>
+{% endblock %}

@@ -78,24 +78,9 @@ def receive_messages(request):
     return render(request, 'message/receive_messages.html', {'messages': messages})
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
-from django.contrib import messages
-from .models import ContactMessage, Shipment
-from .forms import ContactForm, ShipmentForm
-
-
-
-def track_shipment(request):
-    if request.method == 'POST':
-        tracking_id = request.POST.get('tracking_id')
-        try:
-            shipment = Shipment.objects.get(tracking_id=tracking_id)
-            return render(request, 'tracking/tracking_result.html', {'shipment': shipment})
-        except Shipment.DoesNotExist:
-            messages.error(request, 'Tracking ID not found.')
-    return render(request, 'tracking/track_shipment.html')
+from django.contrib.auth.decorators import login_required
+from .models import Shipment
+from .forms import ShipmentForm
 
 @login_required
 def create_shipment(request):
@@ -105,7 +90,21 @@ def create_shipment(request):
             shipment = form.save(commit=False)
             shipment.user = request.user
             shipment.save()
-            return render(request, 'tracking/shipment_success.html', {'shipment': shipment})
+            return render(request, 'tracking/shipment_success.html', {
+                'tracking_id': shipment.tracking_id,
+                'message': 'Shipment created successfully!'
+            })
     else:
         form = ShipmentForm()
     return render(request, 'tracking/create_shipment.html', {'form': form})
+
+
+def track_shipment(request):
+    if request.method == 'POST':
+        tracking_id = request.POST['tracking_id']
+        try:
+            shipment = Shipment.objects.get(tracking_id=tracking_id)
+            return render(request, 'tracking/tracking_result.html', {'shipment': shipment})
+        except Shipment.DoesNotExist:
+            return render(request, 'tracking/tracking_result.html', {'error': 'Tracking ID not found'})
+    return render(request, 'tracking/track_shipment.html')

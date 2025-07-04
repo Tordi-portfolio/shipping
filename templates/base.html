@@ -243,6 +243,7 @@
             <li><a href="{% url 'contact' %}">Contact us</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'create_shipment' %}">create_shipment</a></li>
+            <li><a href="{% url 'track_shipment' %}">Track Shipment</a></li>
             {% if user.is_authenticated and user.is_superuser %}
             <li><a href="{% url 'receive_messages' %}">Admin Messages</a></li>
             {% endif %}

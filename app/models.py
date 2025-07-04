@@ -15,21 +15,37 @@ class ContactMessage(models.Model):
         ordering = ['-created_at'] # Order by newest first
 
 
+import uuid
 from django.db import models
 from django.contrib.auth.models import User
-import uuid
 
 class Shipment(models.Model):
     SERVICE_CHOICES = [
         ('Express', 'Express'),
         ('Standard', 'Standard'),
         ('Economy', 'Economy'),
+        ('Customs clearance (Bounded)', 'Customs clearance (Bounded)'),
+        ('China to UAE as FCL and LCL', 'China to UAE as FCL and LCL'),
+        ('Courier air Shipping to Lebanon', 'Courier air Shipping to Lebanon'),
+        ('Transportation Service To All Over The World', 'Transportation Service To All Over The World'),
+        ('Warehousing. Storage and handling services.', 'Warehousing. Storage and handling services.'),
+        ('FCL & LCL Shipping by sea all over the world.', 'FCL & LCL Shipping by sea all over the world.'),
+        ('Door to DOOR FTL land shipping to GCC Country', 'Door to DOOR FTL land shipping to GCC Country'),
     ]
 
     COMMODITY_CHOICES = [
         ('Electronics', 'Electronics'),
         ('Clothing', 'Clothing'),
         ('Documents', 'Documents'),
+        ('Energy Commodities', 'Energy Commodities'),
+        ('Metals Commodities', 'Metals Commodities'),
+        ('Agricultural Commodities', 'Agricultural Commodities'),
+        ('Livestock and Meat Commodities', 'Livestock and Meat Commodities'),
+        ('Grains Commodities', 'Grains Commodities'),
+        ('Precious Metals', 'Precious Metals'),
+        ('Base Metals', 'Base Metals'),
+        ('Industrial and Construction Commodities', 'Industrial and Construction Commodities'),
+        ('Fertilizers', 'Fertilizers'),
         ('Other', 'Other'),
     ]
 
@@ -46,6 +62,7 @@ class Shipment(models.Model):
     status = models.CharField(max_length=20, choices=[
         ('Processing', 'Processing'),
         ('In Transit', 'In Transit'),
+        ('At Customs', 'At Customs'),
         ('Delivered', 'Delivered'),
     ], default='Processing')
     created_at = models.DateTimeField(auto_now_add=True)

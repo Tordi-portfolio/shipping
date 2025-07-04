@@ -1,7 +1,81 @@
-<h2>Track Your Shipment</h2>
-<form method="POST">
-    {% csrf_token %}
-    <label>Enter Tracking ID:</label>
-    <input type="text" name="tracking_id" required>
-    <button type="submit">Track</button>
-</form>
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #f8f9fa; /* Matches typical Bootstrap light-grey background */
+    }
+
+    .track-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .track-container h2 {
+        margin-bottom: 20px;
+        color: #343a40;
+        font-size: 24px;
+    }
+
+    .track-container label {
+        display: block;
+        text-align: left;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .track-container input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        font-size: 16px;
+        background: #fff;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .track-container input[type="text"]:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.2);
+        outline: none;
+    }
+
+    .btn-track {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #0d6efd;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .btn-track:hover {
+        background-color: #0b5ed7;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="track-container">
+    <h2>Track Your Shipment</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="tracking_id">Enter your Tracking ID:</label>
+        <input type="text" name="tracking_id" id="tracking_id" required>
+
+        <button type="submit" class="btn-track">Track</button>
+    </form>
+</div>
+{% endblock %}

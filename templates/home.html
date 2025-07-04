@@ -245,7 +245,11 @@
             <h1>Experience unmatched speed and efficiency.</h1>
             <p>We excel in reliability, treating each shipment as a promise kept. By prioritizing sustainability and integrating all freight modes.</p>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">Get Started</a>
+                {% if user.is_authenticated %}
+                
+                {% else %}
+                <a href="" class="btn btn-primary">Get Started</a>
+                {% endif %}
                 <a href="#" class="btn btn-secondary">About Us</a>
             </div>
         </div>

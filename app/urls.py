@@ -15,4 +15,5 @@ urlpatterns = [
     path('track_shipment', views.track_shipment, name='track_shipment'),
 
     path('about', views.about, name='about'),
+    path('chat_admin/', views.chat_admin, name='chat_admin'),
 ]

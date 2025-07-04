@@ -146,10 +146,18 @@
             <div class="nav-toggle" id="navToggle">&#9776;</div>
 
             <ul class="nav-links" id="navLinks">
+                {% if user.is_authenticated %}
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'create_shipment' %}">Create Shipment</a></li>
                 <li><a href="{% url 'track_shipment' %}">Track Shipment</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'chat_admin' %}">Chat Admin</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Sign In</a></li>
+                <li><a href="{% url 'register' %}">Sign Up</a></li>
+                {% endif %}
                 <li><a href="">Contact</a></li>
             </ul>
         </div>

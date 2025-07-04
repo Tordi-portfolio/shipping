@@ -110,3 +110,28 @@ def track_shipment(request):
         except Shipment.DoesNotExist:
             return render(request, 'tracking/tracking_result.html', {'error': 'Tracking ID not found'})
     return render(request, 'tracking/track_shipment.html')
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from .models import PrivateChat
+from django.http import JsonResponse
+from django.db import models
+
+@login_required
+def chat_admin(request):
+    admin_user = User.objects.filter(is_superuser=True).first()
+
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        PrivateChat.objects.create(sender=request.user, receiver=admin_user, message=message)
+        return redirect('chat_admin')
+
+    messages = PrivateChat.objects.filter(
+        (models.Q(sender=request.user) & models.Q(receiver=admin_user)) |
+        (models.Q(sender=admin_user) & models.Q(receiver=request.user))
+    ).order_by('timestamp')
+
+    return render(request, 'chat_admin.html', {'messages': messages, 'admin_user': admin_user})

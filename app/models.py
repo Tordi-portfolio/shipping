@@ -77,3 +77,18 @@ class Shipment(models.Model):
 
     def __str__(self):
         return f"{self.tracking_id} - {self.full_name}"
+
+
+
+from django.db import models
+from django.contrib.auth.models import User
+from datetime import datetime
+
+class PrivateChat(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
+    message = models.TextField()
+    timestamp = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return f"From {self.sender.username} to {self.receiver.username} at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"

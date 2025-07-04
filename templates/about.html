@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --background-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --heading-color: #fff;
+            --border-color: #30363d;
+            --accent-bg: #238636;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--accent-bg);
+            color: #fff;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--heading-color);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: var(--text-color);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .core-values {
+            color: #8b949e;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--heading-color);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--text-color);
+            font-size: 15px;
+        }
+
+        /* Journey Section */
+        .journey-section {
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .journey-title {
+            color: #8b949e;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .accordion {
+            background-color: var(--card-bg);
+            border: none;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            text-align: left;
+            padding: 15px;
+            color: var(--heading-color);
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion:last-of-type {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .accordion:hover {
+            background-color: #1c2128;
+        }
+
+        .accordion:after {
+            content: '\25BC';
+            float: right;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.active:after {
+            transform: rotate(180deg);
+        }
+
+        .panel {
+            background-color: var(--background-color);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+            text-align: left;
+            color: var(--text-color);
+            padding: 0 15px;
+        }
+
+        .panel p {
+            padding: 15px 0;
+            font-size: 15px;
+        }
+
+        /* Contact */
+        .contact {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: var(--heading-color);
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .contact a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 14px;
+            color: #8b949e;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="tag">About Us</div>
+
+        <h1>Experience unmatched speed and efficiency.</h1>
+
+        <p>At Swift Ship, we deliver your packages quickly and reliably, using advanced technology and a dedicated team to ensure on-time, hassle-free shipping that keeps your business moving forward.</p>
+
+        <div class="core-values">Our Core Values</div>
+
+        <div class="card">
+            <h3>Speed & Efficiency</h3>
+            <p>We're dedicated to fast, reliable delivery, with every step focused on getting your packages to you quickly.</p>
+        </div>
+
+        <div class="card">
+            <h3>Customer First</h3>
+            <p>We prioritize our customers, offering clear communication, personalized solutions, and exceptional support to exceed expectations.</p>
+        </div>
+
+        <div class="card">
+            <h3>Integrity & Reliability</h3>
+            <p>We build trust through transparency, ensuring every delivery is honest, consistent, and seamless.</p>
+        </div>
+
+        <!-- Journey Section -->
+        <div class="journey-section">
+            <div class="journey-title">Our Journey</div>
+
+            <button class="accordion">The Founding (2010)</button>
+            <div class="panel">
+                <p>Founded in 2010, Swift Ship started with a simple mission: to revolutionize fast, reliable delivery. What began as a small operation focused on meeting urgent shipping needs quickly grew into a trusted service for businesses and individuals alike. By prioritizing speed, transparency, and customer satisfaction, we’ve built a reputation for getting packages to their destination on time, every time.</p>
+            </div>
+
+            <button class="accordion">Rapid Growth (2015–2020)</button>
+            <div class="panel">
+                <p>From 2015 to 2020, Swift Ship experienced rapid growth as demand for fast, reliable delivery surged. During this period, we expanded our network, upgraded our technology, and built a larger, more efficient team to keep pace with the growing market. Our commitment to speed and customer satisfaction allowed us to scale quickly, earning the trust of businesses across industries and establishing us as a leader in fast delivery services.</p>
+            </div>
+
+            <button class="accordion">Present Day</button>
+            <div class="panel">
+                <p>Today, Swift Ship stands at the forefront of the delivery industry, combining cutting-edge technology with a customer-first approach. We've expanded our reach globally, offering fast, reliable shipping solutions to businesses and individuals worldwide. With a focus on innovation, efficiency, and personalized service, we continue to lead the way in fast delivery, ensuring that every package arrives on time—no matter where it's headed.</p>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact">
+            <h2>Get in Touch</h2>
+            <a href="mailto:swiftshipservices@outlook.com">📧 swiftshipservices@outlook.com</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2024 SwiftShip. All rights reserved.
+        </div>
+
+    </div>
+
+    <script>
+        const acc = document.getElementsByClassName("accordion");
+
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

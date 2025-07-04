@@ -13,4 +13,6 @@ urlpatterns = [
 
     path('create_shipment', views.create_shipment, name='create_shipment'),
     path('track_shipment', views.track_shipment, name='track_shipment'),
+
+    path('about', views.about, name='about'),
 ]

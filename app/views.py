@@ -50,6 +50,9 @@ def logout_view(request):
 def home(request):
     return render(request, 'home.html')
 
+def terms(request):
+    return render(request, 'terms.html')
+
 def about(request):
     return render(request, 'about.html')
 
@@ -114,24 +117,87 @@ def track_shipment(request):
 
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
-from .models import PrivateChat
-from django.http import JsonResponse
-from django.db import models
+from django.contrib import messages
+from django.db.models import Q
+from .models import PrivateChat  # Ensure PrivateChat model exists
 
+
+# USER TO ADMIN CHAT
 @login_required
-def chat_admin(request):
-    admin_user = User.objects.filter(is_superuser=True).first()
+def user_chat(request):
+    admin_user = User.objects.filter(is_staff=True).first()  # First admin/staff user
 
-    if request.method == 'POST':
-        message = request.POST.get('message')
-        PrivateChat.objects.create(sender=request.user, receiver=admin_user, message=message)
-        return redirect('chat_admin')
+    if not admin_user:
+        messages.error(request, "Admin not available at the moment.")
+        return redirect('home')
 
-    messages = PrivateChat.objects.filter(
-        (models.Q(sender=request.user) & models.Q(receiver=admin_user)) |
-        (models.Q(sender=admin_user) & models.Q(receiver=request.user))
+    messages_qs = PrivateChat.objects.filter(
+        Q(sender=request.user, receiver=admin_user) |
+        Q(sender=admin_user, receiver=request.user)
     ).order_by('timestamp')
 
-    return render(request, 'chat_admin.html', {'messages': messages, 'admin_user': admin_user})
+    if request.method == 'POST':
+        message_text = request.POST.get('message')
+        if message_text:
+            PrivateChat.objects.create(
+                sender=request.user,
+                receiver=admin_user,
+                message=message_text
+            )
+            return redirect('user_chat')
+
+    return render(request, 'chat/user_chat.html', {
+        'messages': messages_qs,
+        'admin_user': admin_user
+    })
+
+
+# ADMIN PANEL TO CHAT WITH USERS
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def chat_admin(request):
+    users = User.objects.exclude(id=request.user.id)
+    selected_user = None
+    messages_qs = []
+
+    selected_user_id = request.GET.get('user')
+
+    if selected_user_id:
+        try:
+            selected_user = User.objects.get(id=selected_user_id)
+            messages_qs = PrivateChat.objects.filter(
+                Q(sender=request.user, receiver=selected_user) |
+                Q(sender=selected_user, receiver=request.user)
+            ).order_by('timestamp')
+
+            if request.method == 'POST':
+                message_text = request.POST.get('message')
+                if message_text:
+                    PrivateChat.objects.create(
+                        sender=request.user,
+                        receiver=selected_user,
+                        message=message_text
+                    )
+                    return redirect(f'/chat_admin/?user={selected_user.id}')
+
+        except User.DoesNotExist:
+            selected_user = None
+
+    return render(request, 'chat/chat_admin.html', {
+        'users': users,
+        'messages': messages_qs,
+        'selected_user': selected_user
+    })
+
+
+# UNAUTHORIZED VIEW
+def unauthorized(request):
+    return render(request, 'chat/unauthorized.html')
+
+
+
+# OPTIONAL - UNAUTHORIZED VIEW
+def unauthorized(request):
+    return render(request, 'chat/unauthorized.html')

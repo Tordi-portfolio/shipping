@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="chat-admin-container">
+
+    <style>
+        .chat-admin-container {
+            font-family: Arial, sans-serif;
+            background: #eef2f5;
+            display: flex;
+        }
+        .chat-admin-container .sidebar {
+            width: 250px;
+            background: #fff;
+            border-right: 1px solid #ddd;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .chat-admin-container .sidebar h3 {
+            margin-top: 0;
+        }
+        .chat-admin-container .user-link {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            text-decoration: none;
+            color: #333;
+        }
+        .chat-admin-container .user-link:hover {
+            background: #e2e6ea;
+        }
+        .chat-admin-container .chat-section {
+            flex: 1;
+            padding: 20px;
+        }
+        .chat-admin-container .chat-box {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            height: 500px;
+            overflow-y: scroll;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .chat-admin-container .message {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .chat-admin-container .admin {
+            background: #d1e7dd;
+            text-align: right;
+        }
+        .chat-admin-container .user {
+            background: #cfe2ff;
+            text-align: left;
+        }
+        .chat-admin-container form {
+            display: flex;
+            margin-top: 20px;
+        }
+        .chat-admin-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .chat-admin-container button {
+            padding: 10px 20px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+        }
+    </style>
+
+    <div class="sidebar">
+        <h3>Users</h3>
+        {% for user in users %}
+            <a href="?user={{ user.id }}" class="user-link">
+                {{ user.username }}
+            </a>
+        {% empty %}
+            <p>No users available.</p>
+        {% endfor %}
+    </div>
+
+    <div class="chat-section">
+        {% if selected_user %}
+            <h2>Chat with {{ selected_user.username }}</h2>
+            <div class="chat-box">
+                {% for msg in messages %}
+                    <div class="message {% if msg.sender == request.user %}admin{% else %}user{% endif %}">
+                        <strong>{{ msg.sender.username }}:</strong> {{ msg.message }}
+                    </div>
+                {% empty %}
+                    <p>No messages yet.</p>
+                {% endfor %}
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="message" placeholder="Type your message..." required>
+                <button type="submit">Send</button>
+            </form>
+        {% else %}
+            <h2>Select a user to chat with</h2>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

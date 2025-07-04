@@ -149,9 +149,13 @@
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'create_shipment' %}">Create Shipment</a></li>
-                <li><a href="{% url 'track_shipment' %}">Track Shipment</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
-                <li><a href="{% url 'chat_admin' %}">Chat Admin</a></li>
+                <li><a href="{% url 'track_shipment' %}">Track Shipment</a></li>
+                <li><a href="{% url 'user_chat' %}">Chat Admin</a></li>
+                {% if request.user.is_superuser %}
+                <li><a href="{% url 'chat_admin' %}">Admin Panel</a></li>
+                {% endif %}
+                <li><a href="{% url 'terms' %}">Terms and Services</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                 <li><a href="{% url 'home' %}">Home</a></li>

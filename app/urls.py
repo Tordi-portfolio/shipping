@@ -15,5 +15,7 @@ urlpatterns = [
     path('track_shipment', views.track_shipment, name='track_shipment'),
 
     path('about', views.about, name='about'),
+    path('terms', views.terms, name='terms'),
+    path('user_chat', views.user_chat, name='user_chat'),
     path('chat_admin/', views.chat_admin, name='chat_admin'),
 ]

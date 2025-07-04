@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+
+            background: #f4f4f4;
+        }
+        .chat-box {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            height: 400px;
+            overflow-y: scroll;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .message {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .admin {
+            background: #d1e7dd;
+            text-align: left;
+        }
+        .user {
+            background: #cfe2ff;
+            text-align: right;
+        }
+        form {
+            display: flex;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">Chat with Admin ({{ admin_user.username }})</h2>
+
+<div class="chat-box">
+    {% for msg in messages %}
+        <div class="message {% if msg.sender == request.user %}user{% else %}admin{% endif %}">
+            <strong>{{ msg.sender.username }}:</strong> {{ msg.message }}
+        </div>
+    {% empty %}
+        <p>No messages yet.</p>
+    {% endfor %}
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="message" placeholder="Type your message..." required>
+    <button type="submit">Send</button>
+</form>
+
+{% endblock %}

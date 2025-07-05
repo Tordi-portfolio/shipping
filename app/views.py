@@ -56,6 +56,12 @@ def terms(request):
 def about(request):
     return render(request, 'about.html')
 
+def base(request):
+    unread_count = 0
+    if request.user.is_superuser:
+        unread_count = PrivateChat.objects.filter(receiver=request.user, sender__is_staff=False).count()
+    return render(request, 'base.html', {'unread_count': unread_count})
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -121,14 +127,14 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
-from .models import PrivateChat  # Ensure PrivateChat model exists
+from .models import PrivateChat
+from django.contrib.messages import get_messages  # Ensure PrivateChat model exists
 
 
 # USER TO ADMIN CHAT
 @login_required
 def user_chat(request):
-    admin_user = User.objects.filter(is_staff=True).first()  # First admin/staff user
-
+    admin_user = User.objects.filter(is_staff=True).first()
     if not admin_user:
         messages.error(request, "Admin not available at the moment.")
         return redirect('home')
@@ -138,6 +144,9 @@ def user_chat(request):
         Q(sender=admin_user, receiver=request.user)
     ).order_by('timestamp')
 
+    # Mark admin messages as read
+    PrivateChat.objects.filter(sender=admin_user, receiver=request.user, is_read=False).update(is_read=True)
+
     if request.method == 'POST':
         message_text = request.POST.get('message')
         if message_text:
@@ -146,7 +155,7 @@ def user_chat(request):
                 receiver=admin_user,
                 message=message_text
             )
-            return redirect('user_chat')
+        return redirect('user_chat')
 
     return render(request, 'chat/user_chat.html', {
         'messages': messages_qs,
@@ -154,10 +163,22 @@ def user_chat(request):
     })
 
 
+
 # ADMIN PANEL TO CHAT WITH USERS
+from django.contrib.messages import get_messages  # ✅ Required import
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from django.db.models import Q
+from django.shortcuts import render, redirect
+from .models import PrivateChat
+
+
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def chat_admin(request):
+    PrivateChat.objects.filter(receiver=request.user, is_read=False).update(is_read=True)
+
     users = User.objects.exclude(id=request.user.id)
     selected_user = None
     messages_qs = []
@@ -172,6 +193,9 @@ def chat_admin(request):
                 Q(sender=selected_user, receiver=request.user)
             ).order_by('timestamp')
 
+            # Mark messages from the selected user as read
+            PrivateChat.objects.filter(sender=selected_user, receiver=request.user, is_read=False).update(is_read=True)
+
             if request.method == 'POST':
                 message_text = request.POST.get('message')
                 if message_text:
@@ -180,7 +204,7 @@ def chat_admin(request):
                         receiver=selected_user,
                         message=message_text
                     )
-                    return redirect(f'/chat_admin/?user={selected_user.id}')
+                return redirect(f'/chat_admin/?user={selected_user.id}')
 
         except User.DoesNotExist:
             selected_user = None
@@ -192,12 +216,22 @@ def chat_admin(request):
     })
 
 
-# UNAUTHORIZED VIEW
-def unauthorized(request):
-    return render(request, 'chat/unauthorized.html')
-
-
-
 # OPTIONAL - UNAUTHORIZED VIEW
 def unauthorized(request):
     return render(request, 'chat/unauthorized.html')
+
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import PrivateChat
+from django.contrib.auth.models import User
+
+@login_required
+def unread_message_count(request):
+    # Count unread messages for the logged-in user
+    unread_count = PrivateChat.objects.filter(
+        receiver=request.user,
+        is_read=False
+    ).count()
+
+    return JsonResponse({'unread_count': unread_count})

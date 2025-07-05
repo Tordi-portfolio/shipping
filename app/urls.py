@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import unread_message_count 
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -18,4 +19,9 @@ urlpatterns = [
     path('terms', views.terms, name='terms'),
     path('user_chat', views.user_chat, name='user_chat'),
     path('chat_admin/', views.chat_admin, name='chat_admin'),
+
+    path('base', views.base, name='base'),
+    # path('ajax/unread-count/', unread_message_count, name='unread_message_count'),
+    path('unread-message-count/', views.unread_message_count, name='unread_message_count'),
+
 ]

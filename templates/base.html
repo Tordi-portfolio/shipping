@@ -162,15 +162,7 @@
                 <li><a href="{% url 'create_shipment' %}">Create Shipment</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'track_shipment' %}">Track Shipment</a></li>
-                <li>
-                    <a href="{% url 'user_chat' %}" id="userChatLink">
-                        Chat Admin  
-                        <span class="badge" id="messageBadge" style="display:none;">0</span>
-                    </a>
-                </li>
-
                 <li><a href="{% url 'contact' %}">Contact Support</a></li>
-                
                 {% if request.user.is_superuser %}
                 <li>
                     <a href="{% url 'chat_admin' %}" id="adminPanelLink">
@@ -179,6 +171,13 @@
                     </a>
                 </li>
                 <li><a href="{% url 'receive_messages' %}">Support Support</a></li>
+                {% else %}
+                <li>
+                    <a href="{% url 'user_chat' %}" id="userChatLink">
+                        Chat Admin  
+                        <span class="badge" id="messageBadge" style="display:none;">0</span>
+                    </a>
+                </li>
                 {% endif %}
 
                 <li><a href="{% url 'terms' %}">Terms</a></li>
@@ -192,7 +191,7 @@
         </div>
     </nav>
 
-    {% if messages %}
+    {% if messages and request.resolver_match.url_name != 'user_chat' and request.resolver_match.url_name != 'chat_admin' %}
     <div class="message-container" id="messageContainer">
         {% for message in messages %}
         <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags in 'error danger' %}alert-error{% else %}alert-info{% endif %}">
@@ -205,6 +204,7 @@
         {% endfor %}
     </div>
     {% endif %}
+
 
     <style>
     .message-container {

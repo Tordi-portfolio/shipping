@@ -134,6 +134,10 @@ from django.contrib.messages import get_messages  # Ensure PrivateChat model exi
 # USER TO ADMIN CHAT
 @login_required
 def user_chat(request):
+    # Clear all previous messages (login success, errors, etc.)
+    storage = get_messages(request)
+    list(storage)  # Iterate through messages to clear them
+
     admin_user = User.objects.filter(is_staff=True).first()
     if not admin_user:
         messages.error(request, "Admin not available at the moment.")
@@ -144,7 +148,6 @@ def user_chat(request):
         Q(sender=admin_user, receiver=request.user)
     ).order_by('timestamp')
 
-    # Mark admin messages as read
     PrivateChat.objects.filter(sender=admin_user, receiver=request.user, is_read=False).update(is_read=True)
 
     if request.method == 'POST':
@@ -164,19 +167,21 @@ def user_chat(request):
 
 
 
+
 # ADMIN PANEL TO CHAT WITH USERS
 from django.contrib.messages import get_messages  # ✅ Required import
-
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from .models import PrivateChat
 
-
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def chat_admin(request):
+    storage = get_messages(request)
+    list(storage)  # Clear all queued messages
+
     PrivateChat.objects.filter(receiver=request.user, is_read=False).update(is_read=True)
 
     users = User.objects.exclude(id=request.user.id)
@@ -193,7 +198,6 @@ def chat_admin(request):
                 Q(sender=selected_user, receiver=request.user)
             ).order_by('timestamp')
 
-            # Mark messages from the selected user as read
             PrivateChat.objects.filter(sender=selected_user, receiver=request.user, is_read=False).update(is_read=True)
 
             if request.method == 'POST':
